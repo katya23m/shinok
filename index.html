@@ -286,6 +286,9 @@
     object-fit:cover;
     display:block;
   }
+  .dish-photo.fit-full{aspect-ratio:1/1; background:#2b2926;}
+  .dish-photo.fit-full img.bg{position:absolute; inset:0; object-fit:cover; filter:blur(24px) brightness(0.8); transform:scale(1.15);}
+  .dish-photo.fit-full img.fg{position:relative; object-fit:contain; z-index:1;}
   .category-banner{
     width:100%;
     aspect-ratio:16/9;
@@ -742,7 +745,10 @@ categories.forEach((cat, idx) => {
     dish.className = "dish";
 
     const photoKey = DISH_PHOTOS[name];
-    const photoHtml = photoKey
+    const FIT_FULL = ["photo_voda","photo_pepsi","photo_sik","photo_chai_trav","photo_pyvo","photo_lisova","photo_chipsy"];
+    const photoHtml = photoKey && FIT_FULL.includes(photoKey)
+      ? `<div class="dish-photo has-real-photo fit-full"><img class="bg" src="${PHOTOS_RAW[photoKey]}" alt="" aria-hidden="true"><img class="fg" src="${PHOTOS_RAW[photoKey]}" alt="${name}" loading="lazy"></div>`
+      : photoKey
       ? `<div class="dish-photo has-real-photo"><img src="${PHOTOS_RAW[photoKey]}" alt="${name}" loading="lazy"></div>`
       : `<div class="dish-photo" style="--ph1:${p1};--ph2:${p2}">${icon}</div>`;
     const captionHtml = photoKey ? "" : `<div class="dish-caption">Ілюстративне фото</div>`;
